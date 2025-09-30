@@ -44,16 +44,16 @@ chmod +x deploy.sh
 ```
 
 4. **访问应用**
-- 主域名: http://ky11181014.example.com
-- 备用域名: http://www.ky11181014.example.com
+- 主域名: http://ky.arbdns.com
+- 备用域名: http://www.ky.arbdns.com
 - 本地访问: http://localhost
 
-### 专用域名部署 (ky11181014.example.com)
+### 专用域名部署 (ky.arbdns.com)
 
-如果您想使用专用的免费域名 `ky11181014.example.com`，请使用专门的部署脚本：
+如果您想使用专用的免费域名 `ky.arbdns.com`，请使用专门的部署脚本：
 
 ```bash
-# 快速部署到 ky11181014.example.com
+# 快速部署到 ky.arbdns.com
 chmod +x quick-start-ky11181014.sh
 ./quick-start-ky11181014.sh
 
@@ -112,19 +112,19 @@ git pull origin main
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| MYSQL_HOST | 数据库主机 | 11.142.154.110 |
+| MYSQL_HOST | 数据库主机 | xx.xxx |
 | MYSQL_PORT | 数据库端口 | 3306 |
-| MYSQL_DATABASE | 数据库名称 | yx4r9mfd |
-| MYSQL_USERNAME | 数据库用户名 | with_ldfqjviwndxficmc |
-| MYSQL_PASSWORD | 数据库密码 | !!ZawucJTf8B0x |
+| MYSQL_DATABASE | 数据库名称 | ky |
+| MYSQL_USERNAME | 数据库用户名 | root |
+| MYSQL_PASSWORD | 数据库密码 | xxx |
 | ENVIRONMENT | 运行环境 | production |
-| DOMAIN | 域名配置 | ky11181014.com |
+| DOMAIN | 域名配置 | ky.arbdns.com |
 
 ### 域名配置
 
 确保域名DNS记录指向服务器IP地址：
-- A记录: ky11181014.com → 服务器IP
-- A记录: www.ky11181014.com → 服务器IP
+- A记录: ky.arbdns.com → 服务器IP
+- A记录: www.ky.arbdns.com → 服务器IP
 
 ## 📊 API接口
 
