@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋爱记录 - Love Diary</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-br from-pink-50 to-purple-50 min-h-screen">
+    <!-- 头部导航 -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">
+                    <i class="fas fa-heart text-pink-500 mr-2"></i>恋爱记录
+                </h1>
+                <div class="flex items-center space-x-3">
+                    <button id="exportBtn" class="bg-green-100 text-green-600 px-4 py-2 rounded-full hover:bg-green-200 transition-all duration-300">
+                        <i class="fas fa-download mr-2"></i>导出
+                    </button>
+                    <button id="settingsBtn" class="bg-gray-100 text-gray-600 px-4 py-2 rounded-full hover:bg-gray-200 transition-all duration-300">
+                        <i class="fas fa-cog mr-2"></i>设置
+                    </button>
+                    <button id="addRecordBtn" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <i class="fas fa-plus mr-2"></i><span id="addBtnText">添加记录</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 标签页导航 -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-8">
+                <button class="tab-btn active py-4 px-6 text-pink-600 border-b-2 border-pink-500 font-semibold" data-tab="K">
+                    <i class="fas fa-user-circle mr-2"></i>K
+                </button>
+                <button class="tab-btn py-4 px-6 text-gray-600 hover:text-pink-600 font-semibold" data-tab="Y">
+                    <i class="fas fa-user-circle mr-2"></i>Y
+                </button>
+                <button class="tab-btn py-4 px-6 text-gray-600 hover:text-pink-600 font-semibold" data-tab="K&Y">
+                    <i class="fas fa-heart mr-2"></i>K&Y
+                </button>
+                <button class="tab-btn py-4 px-6 text-gray-600 hover:text-pink-600 font-semibold" data-tab="anniversaries">
+                    <i class="fas fa-calendar-heart mr-2"></i>纪念日
+                </button>
+                <button class="tab-btn py-4 px-6 text-gray-600 hover:text-pink-600 font-semibold" data-tab="logs">
+                    <i class="fas fa-history mr-2"></i>操作日志
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 排序和筛选 -->
+        <div class="mb-6 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <label class="text-gray-700 font-medium">排序方式:</label>
+                <select id="sortSelect" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                    <option value="date-desc">日期 (最新)</option>
+                    <option value="date-asc">日期 (最早)</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-4">
+                <label class="text-gray-700 font-medium">心情筛选:</label>
+                <select id="moodFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                    <option value="all">全部心情</option>
+                    <option value="开心">😊 开心</option>
+                    <option value="难过">😢 难过</option>
+                    <option value="感动">🥺 感动</option>
+                    <option value="兴奋">🤩 兴奋</option>
+                    <option value="平静">😌 平静</option>
+                    <option value="甜蜜">🥰 甜蜜</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 记录列表 -->
+        <div id="recordsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 记录卡片将通过JavaScript动态生成 -->
+        </div>
+
+        <!-- 空状态 -->
+        <div id="emptyState" class="text-center py-16 hidden">
+            <i class="fas fa-heart-broken text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl text-gray-500 mb-2">还没有记录</h3>
+            <p class="text-gray-400">点击上方按钮添加第一条恋爱记录吧！</p>
+        </div>
+
+        <!-- 加载状态 -->
+        <div id="loadingState" class="text-center py-16 hidden">
+            <div class="loading mx-auto mb-4"></div>
+            <p class="text-gray-500">正在加载记录...</p>
+        </div>
+    </main>
+
+    <!-- 底部统计 -->
+    <footer class="bg-white shadow-lg mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-wrap justify-center items-center space-x-8 text-gray-600">
+                <div class="flex items-center">
+                    <i class="fas fa-calendar-alt text-pink-500 mr-2"></i>
+                    <span>总记录数: <span id="totalCount" class="font-bold text-pink-600">0</span></span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-smile text-yellow-500 mr-2"></i>
+                    <span>开心记录: <span id="happyCount" class="font-bold text-yellow-600">0</span></span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-heart text-red-500 mr-2"></i>
+                    <span>甜蜜记录: <span id="sweetCount" class="font-bold text-red-600">0</span></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 添加/编辑记录模态框 -->
+    <div id="recordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-2xl font-bold text-gray-800">添加记录</h2>
+                    <button id="closeModal" class="text-gray-400 hover:text-gray-600 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="recordForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">分类</label>
+                        <select id="categoryInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                            <option value="K">K</option>
+                            <option value="Y">Y</option>
+                            <option value="K&Y">K&Y</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">日期</label>
+                        <input type="date" id="dateInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">事件描述</label>
+                        <textarea id="descriptionInput" rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none" placeholder="记录下这个美好的时刻..." required></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">心情标签</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="开心">
+                                😊 开心
+                            </button>
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="难过">
+                                😢 难过
+                            </button>
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="感动">
+                                🥺 感动
+                            </button>
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="兴奋">
+                                🤩 兴奋
+                            </button>
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="平静">
+                                😌 平静
+                            </button>
+                            <button type="button" class="mood-btn p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" data-mood="甜蜜">
+                                🥰 甜蜜
+                            </button>
+                        </div>
+                        <input type="hidden" id="moodInput" required>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-4">
+                        <button type="submit" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                            <i class="fas fa-save mr-2"></i>保存记录
+                        </button>
+                        <button type="button" id="cancelBtn" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-400 transition-colors">
+                            取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认模态框 -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">确认删除</h3>
+                <p class="text-gray-600 mb-6">确定要删除这条记录吗？此操作无法撤销。</p>
+                <div class="flex space-x-3">
+                    <button id="confirmDelete" class="flex-1 bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition-colors">
+                        删除
+                    </button>
+                    <button id="cancelDelete" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑纪念日模态框 -->
+    <div id="anniversaryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-screen overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="anniversaryModalTitle" class="text-2xl font-bold text-gray-800">添加纪念日</h2>
+                    <button id="closeAnniversaryModal" class="text-gray-400 hover:text-gray-600 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="anniversaryForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">纪念日标题</label>
+                        <input type="text" id="anniversaryTitleInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent" placeholder="例如：在一起纪念日" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">日期</label>
+                        <input type="date" id="anniversaryDateInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">描述</label>
+                        <textarea id="anniversaryDescriptionInput" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none" placeholder="记录这个特殊日子的意义..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">分类</label>
+                        <select id="anniversaryCategoryInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                            <option value="love">恋爱相关</option>
+                            <option value="birthday">生日</option>
+                            <option value="meeting">见面</option>
+                            <option value="holiday">节日</option>
+                            <option value="anniversary">其他纪念日</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="anniversaryRecurringInput" class="mr-2 text-pink-500 focus:ring-pink-500">
+                        <label for="anniversaryRecurringInput" class="text-gray-700">每年重复</label>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">提前提醒天数</label>
+                        <select id="anniversaryReminderInput" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                            <option value="0">不提醒</option>
+                            <option value="1">提前1天</option>
+                            <option value="3">提前3天</option>
+                            <option value="7">提前1周</option>
+                            <option value="14">提前2周</option>
+                            <option value="30">提前1个月</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-4">
+                        <button type="submit" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                            <i class="fas fa-save mr-2"></i>保存纪念日
+                        </button>
+                        <button type="button" id="cancelAnniversaryBtn" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-400 transition-colors">
+                            取消
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除纪念日确认模态框 -->
+    <div id="deleteAnniversaryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full">
+            <div class="p-6 text-center">
+                <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-4"></i>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">确认删除</h3>
+                <p class="text-gray-600 mb-6">确定要删除这个纪念日吗？此操作无法撤销。</p>
+                <div class="flex space-x-3">
+                    <button id="confirmDeleteAnniversary" class="flex-1 bg-red-500 text-white py-2 rounded-lg font-medium hover:bg-red-600 transition-colors">
+                        删除
+                    </button>
+                    <button id="cancelDeleteAnniversary" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-400 transition-colors">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设置模态框 -->
+    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">个性化设置</h2>
+                    <button id="closeSettings" class="text-gray-400 hover:text-gray-600 text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- 主题颜色设置 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">主题颜色</label>
+                        <div class="grid grid-cols-4 gap-3">
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="pink" style="background: linear-gradient(135deg, #ec4899, #8b5cf6, #06b6d4);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="blue" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8, #0ea5e9);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="green" style="background: linear-gradient(135deg, #10b981, #059669, #22c55e);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="purple" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed, #a855f7);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="orange" style="background: linear-gradient(135deg, #f97316, #ea580c, #fb923c);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="red" style="background: linear-gradient(135deg, #ef4444, #dc2626, #f87171);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="teal" style="background: linear-gradient(135deg, #14b8a6, #0d9488, #2dd4bf);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="indigo" style="background: linear-gradient(135deg, #6366f1, #4f46e5, #818cf8);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="sunset" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="ocean" style="background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="forest" style="background: linear-gradient(135deg, #22c55e, #10b981, #059669);">
+                            </button>
+                            <button class="theme-btn w-12 h-12 rounded-full border-2 border-gray-300 hover:border-gray-400 transition-all duration-300 hover:scale-110" 
+                                    data-theme="galaxy" style="background: linear-gradient(135deg, #1e1b4b, #581c87, #7c2d12);">
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 字体设置 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">字体样式</label>
+                        <div class="space-y-2">
+                            <button class="font-btn w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" 
+                                    data-font="Inter" style="font-family: 'Inter', sans-serif;">
+                                Inter - 现代简洁
+                            </button>
+                            <button class="font-btn w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" 
+                                    data-font="serif" style="font-family: serif;">
+                                Serif - 经典优雅
+                            </button>
+                            <button class="font-btn w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" 
+                                    data-font="cursive" style="font-family: cursive;">
+                                Cursive - 手写风格
+                            </button>
+                            <button class="font-btn w-full p-3 text-left border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" 
+                                    data-font="monospace" style="font-family: monospace;">
+                                Monospace - 等宽字体
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 背景图片设置 -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-3">背景图片</label>
+                        <div class="grid grid-cols-5 gap-2 mb-4">
+                            <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors bg-gradient-to-br from-pink-50 to-purple-50" 
+                                    data-bg="default">
+                                默认
+                            </button>
+                            <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors" 
+                                    data-bg="romantic" style="background-image: url('https://pic.netbian.com/uploads/allimg/241115/233634-17316849943ba6.jpg'); background-size: cover; background-position: center;">
+                            </button>
+                            <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors" 
+                                    data-bg="couple" style="background-image: url('https://pic.netbian.com/uploads/allimg/241115/233306-1731684786e837.jpg'); background-size: cover; background-position: center;">
+                            </button>
+                            <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors" 
+                                    data-bg="nature" style="background-image: url('https://pic.netbian.com/uploads/allimg/241029/000222-1730131342255c.jpg'); background-size: cover; background-position: center;">
+                            </button>
+                            <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors" 
+                                    data-bg="scenery" style="background-image: url('https://pic.netbian.com/uploads/allimg/241028/235120-17301306803280.jpg'); background-size: cover; background-position: center;">
+                            </button>
+                        </div>
+                        
+                        <!-- 背景透明度调节 -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-2">背景透明度</label>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-sm text-gray-500">不透明</span>
+                                <input type="range" id="bgOpacitySlider" min="0.1" max="1" step="0.1" value="0.8" 
+                                       class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                <span class="text-sm text-gray-500">透明</span>
+                            </div>
+                            <div class="text-center mt-1">
+                                <span id="opacityValue" class="text-sm text-gray-600">80%</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 自定义背景上传 -->
+                        <div class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors">
+                            <input type="file" id="customBgInput" accept="image/*" class="hidden">
+                            <button id="uploadCustomBgBtn" class="w-full text-gray-600 hover:text-gray-800 transition-colors">
+                                <i class="fas fa-cloud-upload-alt text-2xl mb-2 block"></i>
+                                <span class="text-sm">上传自定义背景</span>
+                                <p class="text-xs text-gray-400 mt-1">支持 JPG、PNG、GIF 格式，最大 10MB</p>
+                            </button>
+                            
+                            <!-- 自定义背景预览 -->
+                            <div id="customBgPreview" class="hidden mt-3">
+                                <div class="relative inline-block">
+                                    <img id="customBgImg" class="w-20 h-12 object-cover rounded-lg border-2 border-gray-300">
+                                    <button id="removeCustomBg" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <button class="bg-btn w-full h-16 rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-colors mt-2 hidden" 
+                                        data-bg="custom" id="customBgBtn">
+                                    自定义背景
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-3 pt-6 mt-6 border-t">
+                    <button id="resetSettings" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-400 transition-colors">
+                        重置默认
+                    </button>
+                    <button id="saveSettings" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        保存设置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

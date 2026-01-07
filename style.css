@@ -1,0 +1,1087 @@
+/* 自定义样式和动画 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #db2777, #7c3aed);
+}
+
+/* 标签页动画 */
+.tab-btn {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.tab-btn.active::after {
+    width: 100%;
+}
+
+.tab-btn:hover::after {
+    width: 100%;
+}
+
+/* 记录卡片样式 */
+.record-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.record-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+}
+
+.record-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 心情标签样式 */
+.mood-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.mood-tag.开心 {
+    background: linear-gradient(45deg, #fef3c7, #fde68a);
+    color: #92400e;
+}
+
+.mood-tag.难过 {
+    background: linear-gradient(45deg, #dbeafe, #bfdbfe);
+    color: #1e40af;
+}
+
+.mood-tag.感动 {
+    background: linear-gradient(45deg, #fce7f3, #fbcfe8);
+    color: #be185d;
+}
+
+.mood-tag.兴奋 {
+    background: linear-gradient(45deg, #ecfdf5, #d1fae5);
+    color: #065f46;
+}
+
+.mood-tag.平静 {
+    background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+    color: #374151;
+}
+
+.mood-tag.甜蜜 {
+    background: linear-gradient(45deg, #fef2f2, #fecaca);
+    color: #991b1b;
+}
+
+/* 心情按钮选中状态 */
+.mood-btn.selected {
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+    color: white;
+    border-color: transparent;
+    transform: scale(1.05);
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #ec4899;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 淡入动画 */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 弹出动画 */
+.scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 删除按钮悬停效果 */
+.delete-btn {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.record-card:hover .delete-btn {
+    opacity: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .tab-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .record-card {
+        margin-bottom: 16px;
+    }
+    
+    #recordModal .bg-white {
+        margin: 16px;
+        max-height: calc(100vh - 32px);
+    }
+}
+
+@media (max-width: 640px) {
+    .grid-cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .mood-btn {
+        font-size: 12px;
+        padding: 8px;
+    }
+    
+    .flex.space-x-8 {
+        space-x: 16px;
+    }
+    
+    .text-3xl {
+        font-size: 1.5rem;
+    }
+}
+
+/* 特殊效果 */
+.gradient-text {
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* 心形装饰 */
+.heart-decoration::before {
+    content: '💕';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 24px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.record-card:hover .heart-decoration::before {
+    opacity: 1;
+    transform: rotate(15deg);
+}
+
+/* 日期样式 */
+.date-display {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+/* 描述文本样式 */
+.description-text {
+    line-height: 1.6;
+    color: #4a5568;
+    margin-bottom: 16px;
+}
+
+/* 操作按钮组 */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background: linear-gradient(45deg, #4ade80, #22c55e);
+    color: white;
+}
+
+.edit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.delete-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* 统计卡片样式 */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 主题颜色变量 */
+:root {
+    --primary-color: #ec4899;
+    --secondary-color: #8b5cf6;
+    --primary-light: #fdf2f8;
+    --secondary-light: #f3e8ff;
+}
+
+/* 主题样式 */
+.theme-pink {
+    --primary-color: #ec4899;
+    --secondary-color: #8b5cf6;
+    --primary-light: #fdf2f8;
+    --secondary-light: #f3e8ff;
+}
+
+.theme-blue {
+    --primary-color: #3b82f6;
+    --secondary-color: #1d4ed8;
+    --primary-light: #eff6ff;
+    --secondary-light: #dbeafe;
+}
+
+.theme-green {
+    --primary-color: #10b981;
+    --secondary-color: #059669;
+    --primary-light: #ecfdf5;
+    --secondary-light: #d1fae5;
+}
+
+.theme-purple {
+    --primary-color: #8b5cf6;
+    --secondary-color: #7c3aed;
+    --primary-light: #f5f3ff;
+    --secondary-light: #ede9fe;
+}
+
+.theme-orange {
+    --primary-color: #f97316;
+    --secondary-color: #ea580c;
+    --primary-light: #fff7ed;
+    --secondary-light: #fed7aa;
+}
+
+.theme-red {
+    --primary-color: #ef4444;
+    --secondary-color: #dc2626;
+    --primary-light: #fef2f2;
+    --secondary-light: #fecaca;
+}
+
+.theme-teal {
+    --primary-color: #14b8a6;
+    --secondary-color: #0d9488;
+    --primary-light: #f0fdfa;
+    --secondary-light: #ccfbf1;
+}
+
+.theme-indigo {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --primary-light: #eef2ff;
+    --secondary-light: #e0e7ff;
+}
+
+.theme-sunset {
+    --primary-color: #f59e0b;
+    --secondary-color: #ef4444;
+    --primary-light: #fef3c7;
+    --secondary-light: #fef2f2;
+}
+
+.theme-ocean {
+    --primary-color: #06b6d4;
+    --secondary-color: #3b82f6;
+    --primary-light: #cffafe;
+    --secondary-light: #eff6ff;
+}
+
+.theme-forest {
+    --primary-color: #22c55e;
+    --secondary-color: #10b981;
+    --primary-light: #dcfce7;
+    --secondary-light: #ecfdf5;
+}
+
+.theme-galaxy {
+    --primary-color: #1e1b4b;
+    --secondary-color: #581c87;
+    --primary-light: #f1f5f9;
+    --secondary-light: #faf5ff;
+}
+
+/* 动态主题应用 */
+.dynamic-gradient {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+/* 自定义背景样式 */
+.bg-custom {
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    position: relative;
+}
+
+.bg-custom::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(1px);
+    z-index: -1;
+}
+
+/* 背景遮罩层 */
+.bg-overlay::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 主题选择器选中状态 */
+.theme-btn.selected,
+.font-btn.selected,
+.bg-btn.selected {
+    border-color: var(--primary-color) !important;
+    border-width: 3px !important;
+    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+}
+
+/* 上传区域样式 */
+.upload-area {
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    background-color: #f9fafb;
+    border-color: var(--primary-color);
+}
+
+.upload-area.dragover {
+    background-color: #f0f9ff;
+    border-color: var(--primary-color);
+    transform: scale(1.02);
+}
+
+/* 预览图片样式 */
+.preview-container {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-container img {
+    transition: all 0.3s ease;
+}
+
+.preview-container:hover img {
+    transform: scale(1.05);
+}
+
+/* 渐变动画 */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+/* 主题按钮悬停效果 */
+.theme-btn:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.theme-btn.selected {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8), 0 0 0 6px var(--primary-color);
+}
+
+/* 字体按钮样式 */
+.font-btn:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
+    transform: translateX(4px);
+}
+
+.font-btn.selected {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* 背景按钮样式 */
+.bg-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.bg-btn.selected {
+    border-color: var(--primary-color) !important;
+    border-width: 3px !important;
+    box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.3);
+    transform: scale(1.1);
+}
+
+/* 拖拽上传区域动画 */
+.upload-area.dragover {
+    background: linear-gradient(45deg, var(--primary-light), var(--secondary-light));
+    border-color: var(--primary-color);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+}
+
+/* 自定义背景预览容器 */
+.preview-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.preview-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.preview-container:hover::before {
+    opacity: 1;
+}
+
+/* 设置模态框动画 */
+#settingsModal .bg-white {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .theme-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .upload-area {
+        padding: 16px;
+    }
+    
+    .grid-cols-4 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .theme-galaxy {
+        --primary-light: #0f172a;
+        --secondary-light: #1e1b4b;
+    }
+}
+
+.dynamic-text {
+    color: var(--primary-color) !important;
+}
+
+.dynamic-border {
+    border-color: var(--primary-color) !important;
+}
+
+.dynamic-bg {
+    background-color: var(--primary-light) !important;
+}
+
+/* 图片相关样式 */
+.record-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.image-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.image-upload-area:hover {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+
+.image-upload-area.dragover {
+    border-color: var(--primary-color);
+    background-color: var(--primary-light);
+    transform: scale(1.02);
+}
+
+/* 设置按钮样式 */
+.theme-btn.selected {
+    border-color: var(--primary-color) !important;
+    border-width: 3px;
+    transform: scale(1.1);
+}
+
+.font-btn.selected {
+    background-color: var(--primary-light) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.bg-btn.selected {
+    border-color: var(--primary-color) !important;
+    border-width: 3px;
+    transform: scale(1.05);
+}
+
+/* 字体样式 */
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-serif {
+    font-family: serif;
+}
+
+.font-cursive {
+    font-family: cursive;
+}
+
+.font-monospace {
+    font-family: monospace;
+}
+
+/* 背景图片样式 */
+.bg-romantic {
+    background-image: url('https://pic.netbian.com/uploads/allimg/241029/000222-1730131342255c.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.bg-couple {
+    background-image: url('https://pic.netbian.com/uploads/allimg/241115/233306-1731684786e837.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.bg-nature {
+    background-image: url('https://pic.netbian.com/uploads/allimg/241029/000222-1730131342255c.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.bg-scenery {
+    background-image: url('https://pic.netbian.com/uploads/allimg/241028/235120-17301306803280.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.bg-default {
+    background: linear-gradient(to bottom right, #fdf2f8, #f3e8ff);
+}
+
+/* 背景遮罩 */
+.bg-overlay {
+    position: relative;
+}
+
+.bg-overlay::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: -1;
+    pointer-events: none;
+    transition: background 0.3s ease;
+}
+
+/* 透明度滑块样式 */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, #ec4899, #8b5cf6);
+    outline: none;
+    border-radius: 5px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ec4899;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ec4899;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 分栏标签样式 */
+.category-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.category-tag.K {
+    background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+}
+
+.category-tag.Y {
+    background: linear-gradient(45deg, #ec4899, #be185d);
+}
+
+.category-tag.K-Y {
+    background: linear-gradient(45deg, #f59e0b, #ef4444);
+}
+
+/* 记录卡片分栏样式优化 */
+.record-card.category-K {
+    border-left: 4px solid #3b82f6;
+}
+
+.record-card.category-Y {
+    border-left: 4px solid #ec4899;
+}
+
+.record-card.category-K-Y {
+    border-left: 4px solid #f59e0b;
+}
+
+/* 分栏标签悬停效果 */
+.category-tag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 记录卡片内容区域调整 */
+.record-card .card-content {
+    padding-right: 60px; /* 为右上角标签留出空间 */
+}
+
+/* 移动端分栏标签优化 */
+@media (max-width: 640px) {
+    .category-tag {
+        top: 8px;
+        right: 8px;
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+    
+    .record-card .card-content {
+        padding-right: 50px;
+    }
+}
+
+/* 纪念日相关样式 */
+/* 纪念日网格布局优化 */
+.anniversary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* 纪念日卡片样式优化 */
+.anniversary-card {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.anniversary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.anniversary-card:hover::before {
+    opacity: 1;
+}
+
+.anniversary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 纪念日卡片内容布局优化 */
+.anniversary-card > div:first-child {
+    flex: 1;
+}
+
+.anniversary-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    color: #1f2937;
+}
+
+.anniversary-card p.text-gray-500 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.anniversary-card p.text-gray-600 {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+}
+
+/* 限制描述文本行数 */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 标签样式优化 */
+.anniversary-card span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.375rem 0.75rem;
+}
+
+/* 倒计时样式优化 */
+.anniversary-card .text-lg {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* 纪念日分类颜色 */
+.anniversary-card .text-red-500 {
+    color: #ef4444 !important;
+}
+
+.anniversary-card .text-yellow-500 {
+    color: #eab308 !important;
+}
+
+.anniversary-card .text-blue-500 {
+    color: #3b82f6 !important;
+}
+
+.anniversary-card .text-purple-500 {
+    color: #a855f7 !important;
+}
+
+.anniversary-card .text-pink-500 {
+    color: #ec4899 !important;
+}
+
+/* 纪念日标签样式 */
+.anniversary-card .bg-green-100 {
+    background-color: #dcfce7;
+}
+
+.anniversary-card .text-green-600 {
+    color: #16a34a;
+}
+
+.anniversary-card .bg-blue-100 {
+    background-color: #dbeafe;
+}
+
+.anniversary-card .text-blue-600 {
+    color: #2563eb;
+}
+
+.anniversary-card .bg-gray-100 {
+    background-color: #f3f4f6;
+}
+
+.anniversary-card .text-gray-600 {
+    color: #4b5563;
+}
+
+/* 纪念日卡片动画 */
+.anniversary-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 纪念日表单样式优化 */
+#anniversaryModal .form-group {
+    margin-bottom: 1rem;
+}
+
+#anniversaryModal label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+#anniversaryModal input[type="text"],
+#anniversaryModal input[type="date"],
+#anniversaryModal textarea,
+#anniversaryModal select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#anniversaryModal input[type="text"]:focus,
+#anniversaryModal input[type="date"]:focus,
+#anniversaryModal textarea:focus,
+#anniversaryModal select:focus {
+    outline: none;
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+/* 纪念日复选框样式 */
+#anniversaryModal input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #ec4899;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .anniversary-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .anniversary-card {
+        margin-bottom: 1rem;
+        min-height: auto;
+    }
+    
+    .anniversary-card h3 {
+        font-size: 1.125rem;
+    }
+    
+    .anniversary-card p.text-gray-600 {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .anniversary-card {
+        padding: 1rem;
+    }
+    
+    .anniversary-card h3 {
+        font-size: 1rem;
+    }
+    
+    .anniversary-card .flex.justify-between {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .anniversary-card .flex.items-center.space-x-2 {
+        justify-content: flex-start;
+    }
+    
+    .anniversary-card .text-right {
+        text-align: left;
+    }
+}
